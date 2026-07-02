@@ -1,5 +1,5 @@
 {
-    "name": "hydra/nyholm",
+    "name": "hydrakit/nyholm",
     "description": "Nyholm PSR-7/PSR-17 adapter for the Hydra PHP framework",
     "type": "library",
     "license": "MIT",
@@ -25,7 +25,7 @@
     ],
     "require": {
         "php": ">=8.2",
-        "hydra/http": "*",
+        "hydrakit/http": "*",
         "nyholm/psr7": "^1.8",
         "nyholm/psr7-server": "^1.0",
         "psr/http-message": "^2.0"

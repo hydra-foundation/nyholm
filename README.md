@@ -2,7 +2,7 @@
 
 The one place the framework names a concrete PSR-7/PSR-17 implementation.
 
-`hydra/http` is deliberately free of any PSR-7 vendor — it depends only on the
+`hydrakit/http` is deliberately free of any PSR-7 vendor — it depends only on the
 PSR interfaces and defines a `ServerRequestProviderInterface` seam for building
 the incoming request from the environment. This package is the default adapter
 that fills that seam with [nyholm/psr7](https://github.com/Nyholm/psr7).
