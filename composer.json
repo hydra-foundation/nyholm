@@ -25,6 +25,7 @@
     ],
     "require": {
         "php": ">=8.2",
+        "hydrakit/core": "^0.1",
         "hydrakit/http": "^0.1",
         "nyholm/psr7": "^1.8",
         "nyholm/psr7-server": "^1.0",

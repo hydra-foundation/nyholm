@@ -9,23 +9,38 @@ that fills that seam with [nyholm/psr7](https://github.com/Nyholm/psr7).
 
 ## Usage
 
+The app's composition root registers `NyholmServiceProvider` explicitly — this
+is the one line where an app names its PSR-7 vendor:
+
+```php
+use Hydra\Nyholm\NyholmServiceProvider;
+
+Kernel::application($container, $basePath)
+    ->register(new NyholmServiceProvider)   // fills the PSR-7/17 seams
+    ->register(new HttpServiceProvider(/* ... */))
+    ->register(new AppServiceProvider);
+```
+
+The provider binds `Psr17Factory` (which implements every PSR-17 factory
+interface) as the `ResponseFactoryInterface`/`StreamFactoryInterface` the rest
+of the app resolves, and binds `ServerRequestProviderInterface` to the adapter:
+
 ```php
 use Hydra\Nyholm\NyholmRequestProvider;
 use Nyholm\Psr7\Factory\Psr17Factory;
 
-$factory  = new Psr17Factory; // implements every PSR-17 factory interface
+$factory  = new Psr17Factory;
 $provider = NyholmRequestProvider::create($factory);
 
 $request = $provider->fromGlobals(); // a PSR-7 ServerRequestInterface
 ```
 
-The app's service provider binds `ServerRequestProviderInterface` to this, and
-binds `Psr17Factory` as the PSR-17 response/stream factory the rest of the app
-resolves.
-
 ## Swapping it out
 
-Because consumers depend on `Hydra\Http\Contracts\ServerRequestProviderInterface`
-(and the PSR-17 factory interfaces), an app that prefers a different PSR-7
-library simply doesn't require this package: it binds its own provider and
-factories. Nothing in the framework reaches for nyholm directly.
+The kernel's `HttpServiceProvider` consumes only the PSR-17 factory interfaces
+and `Hydra\Http\Contracts\ServerRequestProviderInterface` — it binds no PSR-7
+vendor. An app that prefers a different PSR-7 library simply doesn't require
+this package: it registers its own provider binding `ResponseFactoryInterface`,
+`StreamFactoryInterface`, and `ServerRequestProviderInterface` to its chosen
+implementation, in place of `NyholmServiceProvider` in the composition root.
+Nothing in the framework reaches for nyholm directly.
